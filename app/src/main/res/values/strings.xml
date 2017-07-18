@@ -1,0 +1,22 @@
+<resources>
+    <string name="app_name">SpotSoon</string>
+    <string name="home">HOME</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="first_text">chain smoker new album 2016</string>
+    <string name="second_text">ft.rihana and user</string>
+
+    <string name="title1">EMPTINESS FT. JUSTIN TIBLEKAR</string>
+    <string name="title2">I\'M FALLING LOVE WITH YOU</string>
+    <string name="title3">BABY FT. JUSTIN BABER</string>
+
+    <string name="time1">18 HOURS AGO</string>
+    <string name="time2">20 HOURS AGO</string>
+    <string name="time3">22 HOURS AGO</string>
+    <string name="desc_text">Lorem Ipsum is a dummy text of the printing and typesetting industry.</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>
