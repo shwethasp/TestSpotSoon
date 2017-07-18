@@ -2,22 +2,20 @@ package com.test.shwetha.testspotsoon.activity;
 
 import android.content.Context;
 import android.os.Build;
+import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.RequiresApi;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -34,13 +32,52 @@ import com.test.shwetha.testspotsoon.fragment.MileStoneFragment;
 import com.test.shwetha.testspotsoon.fragment.VideosFragment;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+    int page = 0;
+    DrawerLayout drawer;
+    Toolbar mToolbar;
+    PagerAdapters adapter;
+    //Tab view Pager
+    ViewPager.OnPageChangeListener tabViewPagerPageChangeListener = new ViewPager.OnPageChangeListener() {
+        @Override
+        public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+        }
+
+        @Override
+        public void onPageSelected(int position) {
+            Log.d("Posi pageSele", "" + position);
+        }
+
+        @Override
+        public void onPageScrollStateChanged(int state) {
+
+        }
+    };
     private ViewPager mViewPager;
     private MyTopViewPagerAdapter mTopViewPagerAdapter;
     private LinearLayout mLinearDotsLayout;
     private TextView[] mDots;
     private int[] mLayouts;
+    //  top viewpager change listener
+    ViewPager.OnPageChangeListener viewPagerPageChangeListener = new ViewPager.OnPageChangeListener() {
 
-    int page = 0;
+        @Override
+        public void onPageSelected(int position) {
+            page = position;
+            addBottomDots(position);
+
+        }
+
+        @Override
+        public void onPageScrolled(int arg0, float arg1, int arg2) {
+
+        }
+
+        @Override
+        public void onPageScrollStateChanged(int arg0) {
+
+        }
+    };
     private Handler handler;
     private int delay = 5000; //milliseconds
     Runnable runnable = new Runnable() {
@@ -56,15 +93,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             handler.postDelayed(this, delay);
         }
     };
-    DrawerLayout drawer;
-    Toolbar mToolbar;
-
     //This is our tablayout
     private TabLayout mTabLayout;
     //This is our view pager
     private ViewPager mTabViewPager;
-    PagerAdapters adapter;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -158,7 +190,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         break;
 
                     case 1:
-                        imageView.setImageResource(R.drawable.image);
+                        imageView.setImageResource(R.mipmap.image);
                         break;
 
                     case 2:
@@ -202,27 +234,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         return mViewPager.getCurrentItem() + i;
     }
 
-    //  top viewpager change listener
-    ViewPager.OnPageChangeListener viewPagerPageChangeListener = new ViewPager.OnPageChangeListener() {
-
-        @Override
-        public void onPageSelected(int position) {
-            page = position;
-            addBottomDots(position);
-
-        }
-
-        @Override
-        public void onPageScrolled(int arg0, float arg1, int arg2) {
-
-        }
-
-        @Override
-        public void onPageScrollStateChanged(int arg0) {
-
-        }
-    };
-
     private void setupTabIcons() {
         LayoutInflater inflater = (LayoutInflater) getApplicationContext().getSystemService
                 (Context.LAYOUT_INFLATER_SERVICE);
@@ -240,7 +251,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         imageView = (ImageView) view.findViewById(R.id.tab_image_view);
         text.setText("IMAGES");
         text.setTextColor(getResources().getColor(android.R.color.darker_gray));
-        imageView.setImageResource(R.drawable.images);
+        imageView.setImageResource(R.mipmap.image);
         mTabLayout.getTabAt(1).setCustomView(view);
 
         view = inflater.inflate(R.layout.custom_tab, null);
@@ -261,7 +272,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         viewPager.setAdapter(adapter);
     }
 
-
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
@@ -278,6 +288,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        handler.removeCallbacks(runnable);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        handler.postDelayed(runnable, delay);
     }
 
     /**
@@ -315,36 +337,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             View view = (View) object;
             container.removeView(view);
         }
-    }
-
-    //Tab view Pager
-    ViewPager.OnPageChangeListener tabViewPagerPageChangeListener = new ViewPager.OnPageChangeListener() {
-        @Override
-        public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
-        }
-
-        @Override
-        public void onPageSelected(int position) {
-            Log.d("Posi pageSele", "" + position);
-        }
-
-        @Override
-        public void onPageScrollStateChanged(int state) {
-
-        }
-    };
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        handler.removeCallbacks(runnable);
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        handler.postDelayed(runnable, delay);
     }
 
 }
